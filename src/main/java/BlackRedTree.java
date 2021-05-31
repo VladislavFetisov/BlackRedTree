@@ -101,8 +101,14 @@ public class BlackRedTree {
                 node.parent.left = node;
                 node.left.parent = node;
                 node.left.right = null;
-                bigRotate(node.left);
-            } else bigRotate(node);
+                node.color = Color.BLACK;
+                node.parent.color = Color.RED;
+                rightRotate(node);
+            } else {
+                node.parent.color = Color.BLACK;
+                node.parent.parent.color = Color.RED;
+                leftRotate(node.parent);
+            }
         } else {
             if (node.parent.key >= node.parent.parent.key) {
                 node.right = node.parent;
@@ -110,35 +116,17 @@ public class BlackRedTree {
                 node.parent.right = node;
                 node.right.parent = node;
                 node.right.left = null;
-                bigRotate(node.right);
-            } else bigRotate(node);
+                node.color = Color.BLACK;
+                node.parent.color = Color.RED;
+                leftRotate(node);
+            } else {
+                node.parent.color = Color.BLACK;
+                node.parent.parent.color = Color.RED;
+                rightRotate(node.parent);
+            }
         }
     }
 
-
-    private void bigRotate(Node node) {
-        if (node.key < node.parent.key) {
-            node.parent.parent.left = node.parent.right;
-            if (node.parent.right != null) node.parent.right.parent = node.parent.parent;
-            node.parent.right = node.parent.parent;
-            node.parent.parent = node.parent.right.parent;
-            node.parent.right.parent = node.parent;
-            node.parent.color = Color.BLACK;
-            node.parent.right.color = Color.RED;
-        } else {
-            node.parent.parent.right = node.parent.left;
-            if (node.parent.left != null) node.parent.left.parent = node.parent.parent;
-            node.parent.left = node.parent.parent;
-            node.parent.parent = node.parent.left.parent;
-            node.parent.left.parent = node.parent;
-            node.parent.color = Color.BLACK;
-            node.parent.left.color = Color.RED;
-        }
-        if (node.parent.parent != null) {
-            if (node.parent.key >= node.parent.parent.key) node.parent.parent.right = node.parent;
-            else node.parent.parent.left = node.parent;
-        } else root = node.parent;
-    }
 
     public boolean delete(int number) {
         Node current = root;
